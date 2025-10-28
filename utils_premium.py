@@ -30,11 +30,31 @@ def add_premium(user_id, days):
     save_premium(data)
     return expire_time
 
+def get_all_premium():
+    return load_premium()
+
 def get_premium_status(user_id):
+    # Owner selalu premium
     if str(user_id) == str(OWNER_ID):
         return "👑 Kamu adalah *Owner* (akses premium permanen)."
+
     data = load_premium()
     exp = data.get(str(user_id))
+    if not exp:
+        return "🚫 Kamu belum premium."
+
+    now = time.time()
+    if exp < now:
+        return "❌ Masa premium kamu sudah berakhir."
+
+    sisa_hari = int((exp - now) / 86400)
+    exp_str = datetime.fromtimestamp(exp).strftime("%d-%m-%Y %H:%M")
+
+    return (
+        f"✅ Kamu *premium*.\n"
+        f"📅 Berlaku sampai: {exp_str}\n"
+        f"⏳ Sisa: {sisa_hari} hari"
+    )    exp = data.get(str(user_id))
     if not exp:
         return "🚫 Kamu belum premium."
     now = time.time()
