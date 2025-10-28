@@ -183,9 +183,7 @@ def addprem_command(update: Update, context: CallbackContext):
 def premium_command(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     status = get_premium_status(user_id)
-    update.message.reply_text(status, parse_mode="Markdown")
-
-
+    update.message.reply_text(status, parse_mode="Ma
 # ---------------- MAIN ----------------
 def main():
     updater = Updater(TELEGRAM_TOKEN, use_context=True)
@@ -203,58 +201,3 @@ def main():
 
 
 if __name__ == "__main__":
-    main()OWNER_USERNAME_URL = os.environ.get("OWNER_URL", "https://t.me/r4vnnx")
-
-# Global Cooldown (detik)
-GLOBAL_COOLDOWN = 20  # sekarang 20 detik
-_last_command_time = 0
-
-# Logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
-# ========================= HELPERS =========================
-def parse_numbers_from_text(text: str) -> List[str]:
-    import re
-    if not text:
-        return []
-    nums = re.findall(r"\d+", text)
-    return [n.strip() for n in nums if n.strip()]
-
-
-parts[1].strip():
-        return update.message.reply_text(
-            "🧩 Kirim contoh: `/fix 628123456789`",
-            parse_mode=ParseMode.MARKDOWN,
-        )
-
-    numbers = parse_numbers_from_text(parts[1])
-    if not numbers:
-        return update.message.reply_text("❌ Nomor tidak valid.", parse_mode=ParseMode.MARKDOWN)
-
-    result = "\n".join([f"✅ Nomor {n} berhasil di-fix!" for n in numbers])
-    update.message.reply_text(result, parse_mode=ParseMode.MARKDOWN)
-
-
-def cmd_cek(update: Update, context: CallbackContext):
-    global _last_command_time
-    now = time.time()
-    if now - _last_command_time < GLOBAL_COOLDOWN:
-        return update.message.reply_text("⏳ Tunggu beberapa detik sebelum gunakan lagi.")
-    _last_command_time = now
-
-    text = update.message.text or ""
-    parts = text.split(" ", 1)
-    if len(parts) < 2 or not parts[1].strip():
-        return update.message.reply_text(
-            "📱 Kirim contoh: `/cek 628123456789` atau `/cek 628123456789,628987654321`",
-            parse_mode=ParseMode.MARKDOWN,
-        )
-
-    numbers = parse_numbers_from_text(parts[1])
-    if not numbers:
-        return update.message.reply_text("❌ Nomor tidak valid.", parse_mode=ParseMode.MARKDOWN)
-
-    result = "\n".join([f"📱 Nomor: {n}" for n in numbers])
-    update.message.reply_text(result, parse_mode=ParseMode.MARKDOWN)
